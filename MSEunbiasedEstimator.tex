@@ -1,0 +1,65 @@
+\documentclass[11pt,letterpaper]{article}
+\pagestyle{empty}
+% pre\'ambulo
+
+\usepackage[T1]{fontenc}
+%\usepackage[spanish,activeacute]{babel}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern, mathtools, babel, textcomp, vmargin, amsfonts, mathrsfs, graphicx, enumerate, subcaption}
+\usepackage[utf8]{inputenc}
+
+%\usepackage[utf8]{inputenc}
+
+
+\setpapersize{A4}
+\spanishdecimal{.}
+\setmargins{1.5cm}             % margen izquierdo
+{1.5cm}                        % margen superior
+{18cm}                         % anchura del texto
+{25.42cm}                      % altura del texto
+{10pt}                         % altura de los encabezados
+{0cm}                          % espacio entre el texto y los encabezados
+{0pt}                          % altura del pie de página
+{1cm}                          % espacio entre el texto y el pie de página
+
+\title{MSE Unbiased estimator}
+\author{}
+\date{}
+\renewcommand{\baselinestretch}{1.5}
+\newcommand\ex{\mathbb{E}}
+\newcommand\sumin{\sum_{i=1}^n}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+Remind $b_1$ is linear combination of $y_i$, it is $b_1=\sumin c_iy_i$, where $c_i=(x_i-\bar{x})/(\sumin(x_i-\bar{x})^2)$, then 
+\begin{align*}
+b_1 &=\sumin c_iy_i =\sumin c_i(\beta_0 + \beta_1x_i + \varepsilon_i )\\
+&=\sumin c_i\beta_0 + \sumin c_i\beta_1 x_i +\sumin c_i\varepsilon_i\\
+&= \beta_0\sumin c_i + \beta_1\sumin c_ix_i + \sumin c_i\epsilon_i\\
+&= \beta_1 + \sumin c_i\varepsilon_i
+\end{align*}
+above is because $\sumin c_i=0$
+\[\sumin \frac{(x_i-\bar{x})}{\sumin (x_i-\bar{x})^2}=\frac{n\bar{x}-n\bar{x}}{\sumin (x_i -\bar{x})^2}=0\]
+and $\sumin c_ix_i=1$.\[\sumin\frac{(x_i - \bar{x})x_i }{\sumin (x_i -\bar{x})^2}=\frac{\sumin (x_i-\bar{x})x_i}{\sumin (x_i-\bar{x})x_i - \sumin(x_i -\bar{x})\bar{x}}=\frac{\sumin(x_i-\bar{x})x_i}{\sumin(x_i - \bar{x})x_i - (n\bar{x} - n\bar{x})\bar{x}}=1\]
+
+Then expect value,
+\begin{align*}
+     &\ex\left[-2 (b_1 - \beta_1) \sumin(x_i - \bar{x}) (\varepsilon_i - \bar{\varepsilon})\right]\\
+     &=\ex\left[-2(\beta_1 + \sumin c_i\varepsilon_i - \beta_1 )\sumin(x_i-\bar{x})(\varepsilon_i-\bar{\varepsilon}) \right]\\
+    &=-2\ex\left[\sumin c_i\varepsilon_i\sumin(x_i-\bar{x})\varepsilon_i \right]\\
+    &= -2\ex\left[\frac{\left(\sumin(x_i-\bar{x})\varepsilon_i\right)^2}{\sumin(x_i-\bar{x})^2}\right]\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\ex\left[\left((x_1-\bar{x})\varepsilon_1 + \sum_{i=2}^{n}(x_i-\bar{x})\varepsilon_i\right)^2\right]\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\ex\left[(x_1-\bar{x})^2\varepsilon_1^2 + \left(\sum_{i=2}^{n}(x_i-\bar{x})\varepsilon_i\right)^2 + 2\left(x_i-\bar{x}\right)\left(\sum_{i=2}^{n}\varepsilon_i(x_i-\bar{x})\right)\right]\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\ex\left[(x_1-\bar{x})^2\varepsilon_1^2\right] + \ex\left[\left(\sum_{i=2}^{n}(x_i-\bar{x})\varepsilon_i\right)^2\right] + \ex\left[2\left(x_i-\bar{x}\right)\left(\sum_{i=2}^{n}\varepsilon_i(x_i-\bar{x})\right)\right]\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\left((x_1-\bar{x})^2\ex\left[\varepsilon_1^2\right] + \ex\left[\left(\sum_{i=2}^{n}(x_i-\bar{x})\varepsilon_i\right)^2\right] + 2\left(x_i-\bar{x}\right)\left(\sum_{i=2}^{n}(x_i-\bar{x})\ex\left[\varepsilon_i\right]\right)\right)\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\left((x_1-\bar{x})^2\ex\left[\varepsilon_1^2\right] + \ex\left[\left(\sum_{i=2}^{n}(x_i-\bar{x})\varepsilon_i\right)^2\right]\right)\\
+    &...\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\left((x_1-\bar{x})^2\ex\left[\varepsilon_1^2\right] + (x_2-\bar{x})^2\ex\left[\varepsilon_2^2\right] + ... + (x_n-\bar{x})^2\ex\left[\varepsilon_n^2\right] \right)\\
+    &=\frac{-2}{\sumin(x_i-\bar{x})^2}\left((x_1-\bar{x})^2\sigma^2 + (x_2-\bar{x})^2\sigma^2 + ... + (x_n-\bar{x})^2\sigma^2 \right)\\
+    &= \frac{-2}{\sumin(x_i-\bar{x})^2}\left((x_1-\bar{x})^2 + (x_2-\bar{x})^2 + ... + (x_n-\bar{x})^2 \right)\sigma^2\\
+    &= \frac{-2 \sumin(x_i-\bar{x})^2}{\sumin(x_i-\bar{x})^2}\sigma^2=-2\sigma^2
+\end{align*}
+
+\end{document}
